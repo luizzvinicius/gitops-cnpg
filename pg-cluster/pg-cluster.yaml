@@ -1,27 +1,16 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: generator-cluster1
-  namespace: default
+  name: devops-back
+#  namespace: postgres
 spec:
-  description: "Generated Cluster 1"
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.1
   instances: 1
-  startDelay: 10
-  stopDelay: 10
-  primaryUpdateStrategy: unsupervised
-
+  imageName: ghcr.io/cloudnative-pg/postgresql:15
+  storage:
+    size: 200Mi
   bootstrap:
     initdb:
-      database: postgres
-      owner: app
+      database: appdb
+      owner: appuser
       secret:
-        name: cluster-example-app-user
-  
-  superuserSecret:
-    name: cluster-example-superuser
-
-  storage:
-    size: "100Mi"
-  monitoring:
-    enablePodMonitor: true
+        name: devops-back
