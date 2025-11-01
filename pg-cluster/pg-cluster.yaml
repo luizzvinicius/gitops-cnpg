@@ -1,18 +1,16 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
 metadata:
-  name: pg-clusters
-  namespace: argocd
+  name: devops-back
+#  namespace: postgres
 spec:
-  project: default
-  source:
-    path: pg-cluster
-    repoURL: 'https://github.com/luizzvinicius/gitops-cnpg.git'
-    targetRevision: HEAD
-  destination:
-    namespace: default
-    server: 'https://kubernetes.default.svc'
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:15
+  storage:
+    size: 200Mi
+  bootstrap:
+    initdb:
+      database: appdb
+      owner: appuser
+      secret:
+        name: devops-back
